@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Inicio | Biblioteca Digital{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <!-- Hero Section -->
+    <div class="hero-section text-center py-5 bg-light mb-5">
+        <div class="container">
+            <h1 class="display-4">¡Bienvenido a tu Biblioteca Digital!</h1>
+            {% if user.is_authenticated %}
+                <p class="lead">Hola {{ user.username }}, explora, organiza y disfruta de tus libros favoritos.</p>
+            {% else %}
+                <p class="lead">Descubre una colección interminable de libros para todos los gustos.</p>
+                <div class="mt-4">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+                    <a href="{% url 'register' %}" class="btn btn-success">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container">
+        {% if user.is_authenticated %}
+            <!-- Barra de búsqueda -->
+            <div class="search-container">
+                <!-- Barra de búsqueda principal -->
+                <form method="GET" action="{% url 'busqueda_libros' %}" class="search-form d-flex align-items-center mb-3">
+                    <input 
+                        type="text" 
+                        name="q" 
+                        id="search-bar" 
+                        class="form-control me-2" 
+                        placeholder="Buscar libros por título, autor o categoría..." 
+                        aria-label="Buscar"
+                    >
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </form>
+            
+                <!-- Campos de búsqueda avanzada -->
+                <div id="advanced-fields" class="advanced-fields">
+                    <div class="mb-3">
+                        <label for="autor" class="form-label">Autor</label>
+                        <input type="text" id="autor" name="autor" class="form-control" placeholder="Buscar por autor">
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select id="categoria" name="categoria" class="form-select">
+                            <option value="">Seleccionar una categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- Sección de libros -->
+            <h2 class="mb-4">Te Recomendamos</h2>
+            <div id="carouselLibros" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- Primer slide con 4 libros -->
+                    <div class="carousel-item active">
+                        <div class="row">
+                            {% for libro in libros_recomendados|slice:":4" %}
+                                <div class="col-6 col-sm-4 col-md-3 mb-4">
+                                    <div class="card h-100 border-0">
+                                        <img src="{{ libro.imagen.url }}" class="card-img-top img-fluid" alt="{{ libro.titulo }}">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{{ libro.titulo }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+            
+                    <!-- Segundo slide con el 5º libro y el botón para ver más -->
+                    <div class="carousel-item">
+                        <div class="row">
+                            {% for libro in libros_recomendados|slice:"4:8" %}
+                                <div class="col-6 col-sm-4 col-md-3 mb-4">
+                                    <div class="card h-100 border-0">
+                                        <img src="{{ libro.imagen.url }}" class="card-img-top img-fluid" alt="{{ libro.titulo }}">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{{ libro.titulo }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- Botón para ver más libros -->
+                            {% if hay_mas_libros %}
+                                <div class="col-6 col-sm-4 col-md-3 mb-4">
+                                    <div class="card h-100 border-0" style="background-color: #f0f0f0; color: #333; display: flex; justify-content: center; align-items: center; text-align: center; height: 100%;">
+                                        <a href="{% url 'libros_recomendados' %}" style="color: #333; text-decoration: none; display: block; padding: 40px 0;">
+                                            <h4>Visualiza más</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Controles del carrusel -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselLibros" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselLibros" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        {% else %}
+            <!-- Call to Action Section -->
+            <div class="bg-light py-5 mt-5">
+                <div class="container text-center">
+                    <h2>¿Listo para leer?</h2>
+                    <p class="lead">Crea una cuenta y accede a miles de libros digitales.</p>
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-success btn-lg">Registrarse</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- CSS -->
+<style>
+    .hero-section {
+        background: url("{% static 'images/library-bg.jpg' %}") no-repeat center center;
+        background-size: cover;
+        color: black;
+        padding: 80px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    .hero-section .btn {
+        font-size: 1.2rem;
+        padding: 10px 30px;
+    }
+
+    .card {
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .lead {
+        color: #34495e;
+    }
+
+    .btn-group .btn {
+        margin-right: 10px;
+    }
+    .advanced-fields {
+        display: none; /* Ocultar por defecto */
+        margin-top: 10px;
+        animation: fadeIn 0.3s ease-in-out; /* Animación suave */
+    }
+
+    .advanced-fields.active {
+        display: block; /* Mostrar cuando esté activa */
+    }
+    .card:hover {
+        transform: scale(1.05);
+        transition: all 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0)
+        }
+    }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #333; /* Color oscuro para las flechas */
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        filter: invert(0); /* Asegura que las flechas no se inviertan de color */
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchBar = document.getElementById("search-bar");
+        const advancedFields = document.getElementById("advanced-fields");
+        const toggleAdvancedSearch = document.getElementById("toggle-advanced-search");
+
+        // Mostrar los campos avanzados cuando se enfoca la barra de búsqueda
+        searchBar.addEventListener("focus", function () {
+            advancedFields.classList.add("active");
+        });
+
+        // Ocultar los campos avanzados si el usuario hace clic fuera del contenedor
+        document.addEventListener("click", function (event) {
+            if (!event.target.closest(".search-container")) {
+                advancedFields.classList.remove("active");
+            }
+        });
+
+        // Mostrar/ocultar los campos avanzados cuando se marca o desmarca el checkbox
+        toggleAdvancedSearch.addEventListener("change", function () {
+            if (this.checked) {
+                advancedFields.classList.add("active");
+            } else {
+                advancedFields.classList.remove("active");
+            }
+        });
+    });
+</script>
+{% endblock %}

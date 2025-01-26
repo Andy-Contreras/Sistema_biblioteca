@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link href="/static/css/formulario.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="form-container">
+        <h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Libro</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="form-errors">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- Campos organizados en filas de 3 -->
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="{{ form.titulo.id_for_label }}">Título</label>
+                    {{ form.titulo }}
+                </div>
+                <div class="form-group col">
+                    <label for="{{ form.autor.id_for_label }}">Autor</label>
+                    {{ form.autor }}
+                    <div id="autor-error" style="color: red; display: none;">El autor solo debe contener letras y espacios.</div>
+                </div>
+                <div class="form-group col">
+                    <label for="{{ form.isbn.id_for_label }}">ISBN</label>
+                    {{ form.isbn }}
+                    <div id="isbn-error" style="color: red; display: none;">El ISBN debe contener solo números y tener entre 10 y 13 caracteres.</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="{{ form.fecha_creacion.id_for_label }}">Fecha de Creación</label>
+                    {{ form.fecha_creacion }}
+                </div>
+                <div class="form-group col">
+                    <label for="{{ form.descripcion.id_for_label }}">Descripción</label>
+                    {{ form.descripcion }}
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="{{ form.categoria.id_for_label }}">Categorías</label>
+                        {% for field in form.categoria %}
+                            <div class="form-check">
+                                {{ field }} {{ field.label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="{{ form.imagen.id_for_label }}">Seleccionar nueva imagen (opcional)</label>
+                    {{ form.imagen }}
+                </div>
+            </div>
+
+            <!-- Nuevo campo url_recurso -->
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="{{ form.url_recurso.id_for_label }}">URL del Recurso</label>
+                    {{ form.url_recurso }}
+                </div>
+            </div>
+
+            <!-- Contenedor para la vista previa de la imagen (oculto por defecto) -->
+            <div id="imagen-preview-container" style="display: none;">
+                <p>Vista previa de la imagen:</p>
+                <img id="imagen-preview" src="#" alt="Vista previa de la imagen" class="preview-img" style="max-width: 200px;">
+            </div>
+
+            <!-- Mostrar imagen actual si ya existe -->
+            {% if form.instance.imagen %}
+                <div class="form-group">
+                    <p>Imagen actual:</p>
+                    <img src="{{ form.instance.imagen.url }}" alt="Imagen actual" class="preview-img" style="max-width: 200px;">
+                </div>
+            {% endif %}
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-submit">Guardar</button>
+                <a href="{% url 'libro_listado' %}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript para mostrar la imagen seleccionada -->
+    <script>
+        document.getElementById('id_imagen').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imagePreview = document.getElementById('imagen-preview');
+                var previewContainer = document.getElementById('imagen-preview-container');
+                imagePreview.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+        // Validación para el campo de Autor
+        document.getElementById('id_autor').addEventListener('input', function(event) {
+            var autor = event.target.value;
+            // Expresión regular que permite letras, espacios, coma (,) y punto (.)
+            var regex = /^[A-Za-záéíóúÁÉÍÓÚñÑ ,.\u00A0]+$/;
+        
+            // Verificar si el valor no coincide con la expresión regular
+            if (!regex.test(autor)) {
+                // Mostrar el mensaje de error
+                document.getElementById('autor-error').style.display = 'block';
+            } else {
+                // Ocultar el mensaje de error si el valor es válido
+                document.getElementById('autor-error').style.display = 'none';
+            }
+        });
+        
+        // Validación para el campo de ISBN
+        document.getElementById('id_isbn').addEventListener('input', function(event) {
+            var isbn = event.target.value;
+            // Expresión regular que valida que el ISBN tenga entre 10 y 13 dígitos numéricos
+            var regex = /^\d{10,13}$/;
+        
+            // Verificar si el valor no coincide con la expresión regular
+            if (!regex.test(isbn)) {
+                // Mostrar el mensaje de error para ISBN (puedes agregar un div similar al del autor si lo deseas)
+                document.getElementById('isbn-error').style.display = 'block';
+            } else {
+                // Ocultar el mensaje de error si el valor es válido
+                document.getElementById('isbn-error').style.display = 'none';
+            }
+        });
+        
+        // Detener el envío del formulario si hay errores
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var autor = document.getElementById('id_autor').value;
+            var isbn = document.getElementById('id_isbn').value;
+            
+            var autorRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑ ,.\u00A0]+$/;
+            var isbnRegex = /^\d{10,13}$/;
+        
+            // Verificar si los valores de autor e isbn son válidos
+            var autorValido = autorRegex.test(autor);
+            var isbnValido = isbnRegex.test(isbn);
+        
+            // Si alguno no es válido, mostrar los mensajes de error y prevenir el envío del formulario
+            if (!autorValido || !isbnValido) {
+                if (!autorValido) {
+                    document.getElementById('autor-error').style.display = 'block';
+                }
+                if (!isbnValido) {
+                    document.getElementById('isbn-error').style.display = 'block';
+                }
+                event.preventDefault();  // Esto detiene el envío del formulario
+            }
+        });
+    </script>
+{% endblock %}

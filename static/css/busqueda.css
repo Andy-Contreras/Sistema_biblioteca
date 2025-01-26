@@ -1,0 +1,79 @@
+.search-form {
+    display: flex;
+    flex-wrap: wrap; /* Permitir que los elementos se ajusten en varias líneas */
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: space-between; /* Espaciar los elementos */
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 200px; /* Ancho mínimo */
+    max-width: 100%; /* Asegurarse de que no se desborde */
+}
+
+.btn-primary,
+.btn-warning {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 120px; /* Ancho mínimo */
+    text-align: center;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* Media query para pantallas de 768px */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column; /* Cambiar a diseño vertical */
+        align-items: stretch; /* Estirar los elementos para ocupar el ancho completo */
+    }
+
+    .search-input,
+    .btn-primary,
+    .btn-warning {
+        width: 100%; /* Asegurar que ocupen el ancho completo */
+    }
+
+    .btn-primary,
+    .btn-warning {
+        margin-top: 5px; /* Espacio entre los botones */
+    }
+}
+
+/* Media query para pantallas de 480px */
+@media (max-width: 480px) {
+    .search-form {
+        gap: 5px; /* Reducir el espacio entre elementos */
+    }
+
+    .search-input {
+        font-size: 14px; /* Reducir el tamaño de la fuente */
+        padding: 6px; /* Reducir el espacio interno */
+    }
+
+    .btn-primary,
+    .btn-warning {
+        font-size: 14px; /* Reducir el tamaño de la fuente */
+        padding: 6px 12px; /* Reducir el espacio interno */
+    }
+}

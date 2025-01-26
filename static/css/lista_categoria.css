@@ -1,0 +1,44 @@
+/* Estilos específicos para la sección de categorías */
+.categorias-container {
+    max-width: 1200px;
+    padding: 20px;
+    margin-top: 30px; /* Espaciado superior */
+}
+
+/* Estilos para el header, para que el título y los botones estén en una misma fila */
+.header {
+    display: flex;
+    justify-content: space-between; /* Alinea los elementos a los extremos */
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-bottom: 20px;
+}
+
+/* Aseguramos que el contenedor de botones se alinee a la derecha */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Tabla de categorías */
+.table {
+    margin-top: 15px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table thead th {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.table td,
+.table th {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.table td.descripcion {
+    text-align: justify; /* Justifica la columna de descripción */
+}

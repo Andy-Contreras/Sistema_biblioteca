@@ -1,0 +1,78 @@
+.btn-group {
+    gap: 5px;
+    text-align: end;
+}
+
+.btn {
+    border-radius: 5px!important;
+    padding: 5px!important;
+}
+
+.float-right {
+    float: inline-end;
+}
+
+.custom-header {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.custom-footer {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.login-form, .register-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

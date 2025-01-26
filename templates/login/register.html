@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link href="/static/css/register.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="register-form">
+    <h2>Register</h2>
+    {% if messages %}
+        <div class="form-messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+</div>
+{% endblock %}

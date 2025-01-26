@@ -1,0 +1,120 @@
+/* Contenedor del formulario */
+.register-form {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fdfaf4;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3e6d5;
+}
+
+/* Título */
+.register-form h2 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-family: 'Georgia', serif;
+}
+
+/* Mensajes generales */
+.form-messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background-color: #ffe6e6;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+/* Grupos de campos */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Campos de entrada */
+.register-form input[type="text"],
+.register-form input[type="password"],
+.register-form input[type="email"],
+.register-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fefaf4;
+    transition: border-color 0.3s ease;
+}
+
+.register-form input:focus,
+.register-form textarea:focus {
+    border-color: #a66a4f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(166, 106, 79, 0.3);
+}
+
+/* Errores específicos de campos */
+.field-error {
+    color: #a94442;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* Botón */
+.register-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #a66a4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.register-form button:hover {
+    background-color: #8b533b;
+    transform: scale(1.02);
+}
+
+/* Enlace */
+.register-form p {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-form a {
+    color: #a66a4f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-form a:hover {
+    color: #8b533b;
+    text-decoration: underline;
+}

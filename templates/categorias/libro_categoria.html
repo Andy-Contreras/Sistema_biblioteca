@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link href="/static/css/listado_libros.css" rel="stylesheet">
+    <link href="/static/css/busqueda.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1>Libros en la Categoría: {{ categoria.nombre }}</h1>
+        <div class="form-buttons">
+            <a href="{% url 'categoria_listado' %}" class="btn btn-danger">Regresar</a>
+        </div>
+    </header>
+
+    <!-- Barra de búsqueda -->
+    <form method="get" class="search-form">
+        <input 
+            type="text" 
+            name="q" 
+            placeholder="Buscar por título o autor..." 
+            value="{{ query }}" 
+            class="search-input"
+        >
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="{% url 'categoria_libro'  categoria.id%}" class="btn btn-warning ms-2">Recargar</a>
+    </form>
+
+    {% if categoria_listado %}
+        <div class="libros-list">
+            {% for libro in categoria_listado %}
+            <div class="libro-item">
+                <div class="libro-img">
+                    {% if libro.imagen %}
+                        <img src="{{ libro.imagen.url }}" alt="Imagen de {{ libro.titulo }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150x200?text=Sin+Imagen" alt="Sin imagen">
+                    {% endif %}
+                </div>
+                <div class="libro-info">
+                    <h3>{{ libro.titulo }}</h3>
+                    <p><strong>Autor:</strong> {{ libro.autor }}</p>
+                    <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
+                    <p><strong>Fecha de Creación:</strong> {{ libro.fecha_creacion }}</p>
+                    <p class="descripcion"><strong>Descripción:</strong> <span>{{ libro.descripcion }}</span></p>
+                    <p><strong>Categoría:</strong> 
+                        {% for categoria in libro.categoria.all %}
+                            {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><strong>Vistas Digitales:</strong> {{ libro.vistas_digitales }}</p>
+                    
+                    <!-- Botones debajo de Vistas Digitales -->
+                    <div class="libro-actions">
+                        <a href="{% url 'visualizar_libro' libro.id %}" class="btn btn-info" target="_blank">Visualizar</a>
+                        {% if not user.is_reader %}
+                            <a href="{% url 'libro_editar' libro.id %}" class="btn btn-warning">Editar</a>
+                            <a href="#" class="btn btn-danger">Eliminar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No hay libros disponibles en esta categoría.</p>
+    {% endif %}
+</div>
+{% endblock %}

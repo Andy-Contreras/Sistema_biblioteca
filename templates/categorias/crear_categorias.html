@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link href="/static/css/formulario.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Categoría</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Campos organizados en filas de 2 -->
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="{{ form.nombre.id_for_label }}">Nombre de la Categoría:</label>
+                    {{ form.nombre }}
+                    <div id="nombre-error" style="color: red; display: none;">El nombre de la categoría solo debe contener letras.</div>
+                </div>
+                <div class="form-group col">
+                    <label for="{{ form.descripcion.id_for_label }}">Descripción:</label>
+                    {{ form.descripcion }}
+                </div>
+            </div>
+
+            <!-- Botones para guardar o cancelar -->
+            <div class="form-buttons">
+                <button type="submit" class="btn-submit">Guardar</button>
+                <a href="{% url 'categoria_listado' %}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('id_nombre').addEventListener('input', function(event) {
+            var nombre = event.target.value;
+            // Expresión regular que permite solo letras y espacios
+            var regex = /^[A-Za-záéíóúÁÉÍÓÚñÑ ]+$/;
+
+            // Verificar si el valor no coincide con la expresión regular
+            if (!regex.test(nombre)) {
+                // Mostrar el mensaje de error si el nombre no es válido
+                document.getElementById('nombre-error').style.display = 'block';
+            } else {
+                // Ocultar el mensaje de error si el valor es válido
+                document.getElementById('nombre-error').style.display = 'none';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var nombre = document.getElementById('id_nombre').value;
+            var regex = /^[A-Za-záéíóúÁÉÍÓÚñÑ ]+$/;
+
+            // Verificar si el valor del nombre es válido
+            if (!regex.test(nombre)) {
+                // Si no es válido, mostrar el mensaje de error y prevenir el envío del formulario
+                document.getElementById('nombre-error').style.display = 'block';
+                event.preventDefault();  // Esto detiene el envío del formulario
+            }
+        });
+    </script>
+{% endblock %}

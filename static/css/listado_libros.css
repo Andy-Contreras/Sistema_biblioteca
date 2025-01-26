@@ -1,0 +1,129 @@
+/* Estilos específicos para la sección de libros */
+.libros-container {
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Estilos para el header, para que el título y los botones estén en una misma fila */
+.header {
+    display: flex;
+    justify-content: space-between; /* Alinea los elementos a los extremos */
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+/* Aseguramos que el contenedor de botones se alinee a la derecha */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Estilos para el listado de libros */
+.libros-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.libro-item {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.libro-img img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.libro-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.libro-info h3 {
+    margin: 0;
+}
+
+.libro-info p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.descripcion {
+    text-align: justify;
+    margin-top: 10px;
+}
+
+.libro-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.libro-actions .btn {
+    width: 100px;
+}
+
+/* Aseguramos que el navbar no sea afectado */
+.navbar {
+    background-color: #343a40;
+    padding: 10px 20px;
+}
+
+/* Media Queries para hacer el diseño responsivo */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .libros-list {
+        flex-direction: column;
+    }
+
+    .libro-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .libro-img img {
+        width: 120px;
+        height: 160px;
+    }
+
+    .libro-info {
+        text-align: center;
+    }
+
+    .libro-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .libro-item {
+        padding: 10px;
+    }
+
+    .libro-info h3 {
+        font-size: 18px;
+    }
+
+    .libro-info p {
+        font-size: 14px;
+    }
+
+    .libro-actions .btn {
+        width: 80px;
+    }
+}

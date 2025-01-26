@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link href="/static/css/listado_libros.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1>Libros Recomendados</h1>
+        <a href="{% url 'home' %}" class="btn btn-danger">Regresar</a>
+    </header>
+
+    {% if libros_recomendados %}
+        <div class="libros-list">
+            {% for recomendacion in libros_recomendados %}
+            <div class="libro-item">
+                <div class="libro-img">
+                    {% if recomendacion.libro.imagen %}
+                        <img src="{{ recomendacion.libro.imagen.url }}" alt="Imagen de {{ recomendacion.libro.titulo }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150x200?text=Sin+Imagen" alt="Sin imagen">
+                    {% endif %}
+                </div>
+                <div class="libro-info">
+                    <h3>{{ recomendacion.libro.titulo }}</h3>
+                    <p><strong>Autor:</strong> {{ recomendacion.libro.autor }}</p>
+                    <p><strong>ISBN:</strong> {{ recomendacion.libro.isbn }}</p>
+                    <p><strong>Fecha de Creación:</strong> {{ recomendacion.libro.fecha_creacion }}</p>
+                    <p class="descripcion"><strong>Descripción:</strong> <span>{{ recomendacion.libro.descripcion }}</span></p>
+                    <p><strong>Categorías:</strong> 
+                        {% for categoria in recomendacion.libro.categoria.all %}
+                            {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><strong>Vistas Digitales:</strong> {{ recomendacion.libro.vistas_digitales }}</p>
+                    <p><strong>Recomendaciones:</strong> {{ recomendacion.num_recomendaciones }} personas han recomendado este libro</p>
+                    <div class="libro-actions">
+                        <a href="{% url 'visualizar_libro' recomendacion.id %}" class="btn btn-info" target="_blank">Visualizar</a>
+                    </div>    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No has recomendado ningún libro aún.</p>
+    {% endif %}
+</div>
+{% endblock %}
