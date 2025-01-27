@@ -33,6 +33,9 @@
                 <div class="form-group col">
                     <label for="{{ form.isbn.id_for_label }}">ISBN</label>
                     {{ form.isbn }}
+                    {% if form.isbn.errors %}
+                        <div style="color: red;">{{ form.isbn.errors }}</div>
+                    {% endif %}
                     <div id="isbn-error" style="color: red; display: none;">El ISBN debe contener solo números y tener entre 10 y 13 caracteres.</div>
                 </div>
             </div>

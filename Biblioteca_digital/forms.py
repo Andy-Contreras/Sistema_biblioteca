@@ -52,6 +52,13 @@ class LibroForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'input-textarea'}),
             'url_recurso': forms.URLInput(attrs={'class': 'input-text', 'placeholder': 'URL del recurso'}),
         }
+
+    def clean_isbn(self):
+        isbn = self.cleaned_data.get('isbn')
+        if Libro.objects.filter(isbn=isbn).exists():
+            raise forms.ValidationError("El ISBN ya existe. Por favor, ingrese un valor único.")
+        return isbn
+
 class VistaLibroForm(forms.ModelForm):
     class Meta:
         model = VistaLibro
