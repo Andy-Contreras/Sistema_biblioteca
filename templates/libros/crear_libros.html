@@ -41,6 +41,7 @@
                 <div class="form-group col">
                     <label for="{{ form.fecha_creacion.id_for_label }}">Fecha de Creación</label>
                     {{ form.fecha_creacion }}
+                    <div id="fecha-error" style="color: red; display: none;">La fecha no puede ser posterior a hoy.</div>
                 </div>
                 <div class="form-group col">
                     <label for="{{ form.descripcion.id_for_label }}">Descripción</label>
@@ -164,6 +165,49 @@
                     document.getElementById('isbn-error').style.display = 'block';
                 }
                 event.preventDefault();  // Esto detiene el envío del formulario
+            }
+        });
+        
+        function convertirFechaFormatoISO(fechaInput) {
+            // Asegura que el formato ingresado sea válido (DD/MM/YYYY)
+            const partesFecha = fechaInput.split('/');
+            if (partesFecha.length === 3) {
+                const dia = partesFecha[0];
+                const mes = partesFecha[1];
+                const anio = partesFecha[2];
+                return `${anio}-${mes}-${dia}`;
+            }
+            return fechaInput; // Si no tiene el formato esperado, devuélvelo tal cual
+        }
+    
+        // Validación para el campo de fecha
+        document.getElementById('id_fecha_creacion').addEventListener('input', function(event) {
+            const fechaInput = convertirFechaFormatoISO(event.target.value);
+            const fechaActual = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
+            const mensajeError = document.getElementById('fecha-error');
+    
+            if (fechaInput > fechaActual) {
+                // Mostrar el mensaje de error y borrar el valor inválido
+                mensajeError.style.display = 'block';
+                event.target.value = ''; // Borra el valor inválido
+            } else {
+                // Ocultar el mensaje de error si la fecha es válida
+                mensajeError.style.display = 'none';
+            }
+        });
+    
+        // Detener el envío del formulario si la fecha no es válida
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const fechaCreacion = convertirFechaFormatoISO(document.getElementById('id_fecha_creacion').value);
+            const fechaActual = new Date().toISOString().split('T')[0];
+            const mensajeError = document.getElementById('fecha-error');
+    
+            if (fechaCreacion > fechaActual) {
+                // Mostrar el mensaje de error y detener el envío del formulario
+                mensajeError.style.display = 'block';
+                event.preventDefault(); // Evita el envío del formulario
+            } else {
+                mensajeError.style.display = 'none';
             }
         });
     </script>
